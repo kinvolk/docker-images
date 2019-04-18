@@ -1,4 +1,4 @@
-FROM python:3.6.5
+FROM python:3.7
 
 LABEL maintainer="valentin.mouret@pubnative.net"
 
@@ -10,7 +10,7 @@ ARG JAVA_BUILD_NUMBER=11
 ENV JAVA_HOME /usr/jdk1.${JAVA_MAJOR_VERSION}.0_${JAVA_UPDATE_VERSION}
 ENV SPARK_CLASSPATH='/opt/app/java_libs/aws-java-sdk-1.7.4.jar:/opt/app/java_libs/hadoop-aws-2.7.3.jar'
 ENV PATH $PATH:$JAVA_HOME/bin
-ENV SPARK_VERSION 2.3.2
+ENV SPARK_VERSION 2.4.1
 
 RUN curl -sL --retry 3 --insecure \
     --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
@@ -24,16 +24,6 @@ RUN curl -sL --retry 3 --insecure \
 RUN mkdir -p /opt/app/java_libs && cd /opt/app/java_libs \
     && wget http://central.maven.org/maven2/com/amazonaws/aws-java-sdk/1.7.4/aws-java-sdk-1.7.4.jar -O /opt/app/java_libs/aws-java-sdk-1.7.4.jar \
     && wget http://central.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar -O /opt/app/java_libs/hadoop-aws-2.7.3.jar
-
-# Mesos
-RUN echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list \
-    && apt -q update && apt install -y libssl1.0.0 \
-    && echo 'deb http://repos.mesosphere.com/ubuntu xenial main' >> /etc/apt/sources.list.d/mesosphere.list \
-    && apt-get install dirmngr && apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF \
-    && apt-get -y update \
-    && apt-get -y install mesos=1.3.0-2.0.3 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
 
 #Spark
 
