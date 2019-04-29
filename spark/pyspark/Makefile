@@ -1,5 +1,5 @@
 container_name=pubnative/pyspark-ci
-version=1.0.2
+version=1.0.3
 tag=$(container_name):$(version)
 
 all: build push
